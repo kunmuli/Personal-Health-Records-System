@@ -22,29 +22,48 @@ participant Patient identified by patientId {
   o String patientId
   o String firstName
   o String lastName
-  o MedicalRecord[] medRec
+  o Integer idNumber
+  o DateTime dateOfBirth
+  o String address
+  o String email
 }
 
 participant Doctor identified by doctorId {
   o String doctorId
   o String firstName
   o String lastName
+  o Integer idNumber
+  o String address
+  o String email
+  o String speciality
+  o String registrationNo
+
 }
 
-concept MedicalRecord {
+participant Researcher identified by researcherId {
+  o String researcherId
+  o String firstName
+  o String lastName
+}
+
+asset MedicalRecord identified by recordId{
   o String recordId
-  --> Doctor doctor
   o String diagnosis
-  o String[] medicine
-  o Integer[] quantity
+  o String[] medicine optional
+  o Integer[] quantity optional
   o String[] files optional
+  o Boolean researchAccess
+  o String[] permissions optional
+  --> Patient owner
+  --> Doctor authorId
 }
 
-transaction CreateMedicalRecord {
-  --> Patient patient
+transaction AuthorizeAccess {
   --> Doctor doctor
-  o String diagnosis
-  o String[] medicine
-  o Integer[] quantity
-  o String[] files optional
+  --> MedicalRecord record
+}
+
+transaction RevokeAccess {
+  --> Doctor doctor
+  --> MedicalRecord record
 }
