@@ -12,6 +12,78 @@
  * limitations under the License.
  */
 
+rule PatientSeeUpdateThemselvesOnly {
+  description: "A patient can see and update their own record only"
+  participant(p): "org.conisol.mynetwork.Patient"
+  operation: READ, UPDATE
+  resource(r): "org.conisol.mynetwork.Patient"
+  condition: (r.getIdentifier() == p.getIdentifier())
+  action: ALLOW
+}
+rule DoctorSeeUpdateThemselvesOnly {
+  description: "A doctor can see and update their own record only"
+  participant(p): "org.conisol.mynetwork.Doctor"
+  operation: READ, UPDATE
+  resource(r): "org.conisol.mynetwork.Doctor"
+  condition: (r.getIdentifier() == p.getIdentifier())
+  action: ALLOW
+}
+rule ResearcherSeeUpdateThemselvesOnly {
+  description: "A researcher can see and update their own record only"
+  participant(p): "org.conisol.mynetwork.Researcher"
+  operation: READ, UPDATE
+  resource(r): "org.conisol.mynetwork.Researcher"
+  condition: (r.getIdentifier() == p.getIdentifier())
+  action: ALLOW
+}
+
+rule PatientViewUpdateTheirRecords {
+  description: "Patient can view with their own Medical Records"
+  participant(p): "org.conisol.mynetwork.Patient"
+  operation: READ,UPDATE
+  resource(r): "org.conisol.mynetwork.MedicalRecord"
+  condition: (r.owner.getIdentifier() == p.getIdentifier())
+  action: ALLOW
+}
+
+rule DoctorAccessTheirRecords {
+  description: "Doctor can create,read,update Medical Records they created"
+  participant(p): "org.conisol.mynetwork.Doctor"
+  operation: CREATE,READ,UPDATE
+  resource(r): "org.conisol.mynetwork.MedicalRecord"
+  condition: (r.authorId.getIdentifier() == p.getIdentifier())
+  action: ALLOW
+}
+rule AuthorizeAccessTransaction {
+    description: "Allow Patient to authorize access to their records"
+    participant: "org.conisol.mynetwork.Patient"
+    operation: ALL
+    resource: "org.conisol.mynetwork.AuthorizeAccess"
+    action: ALLOW
+}
+rule RevokeAccessTransaction {
+    description: "Allow Patient to revoke access to their records"
+    participant: "org.conisol.mynetwork.Patient"
+    operation: ALL
+    resource: "org.conisol.mynetwork.RevokeAccess"
+    action: ALLOW
+}
+
+rule MedicalRecordConditionalAccess {
+    description: "Allow doctors access to patients records if granted"
+    participant(p): "org.conisol.mynetwork.Doctor"
+    operation: ALL
+    resource(r): "org.conisol.mynetwork.MedicalRecord"
+    condition: (r.permissions && r.permissions.indexOf(p.getIdentifier()) > -1)
+    action: ALLOW
+}
+rule SystemACL {
+    description:  "System ACL to permit all access"
+    participant: "org.hyperledger.composer.system.Participant"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
 rule NetworkAdminUser {
     description: "Grant business network administrators full access to user resources"
     participant: "org.hyperledger.composer.system.NetworkAdmin"

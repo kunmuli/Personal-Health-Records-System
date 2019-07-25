@@ -3,7 +3,7 @@
     "composer": "^0.20.8"
   },
   "name": "phrs",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "description": "The main objective of this system is to provide patients with one-stop-shop access to their medical history across multiple providers. From here the patients are given full access and control of their medical records.",
   "scripts": {
     "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/patient-health-records.bna",
