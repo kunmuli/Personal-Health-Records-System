@@ -13,8 +13,8 @@ The main objective of this system is to provide patients with one-stop-shop acce
 - First install [Hyperledger composer](https://hyperledger.github.io/composer/latest/installing/installing-prereqs.html). Then install the [development environment](https://hyperledger.github.io/composer/latest/installing/development-tools.html).
 - Execute the following commands to setup your Blockchain network and generate Hyperledger Composer Rest Server:
 - `composer archive create -t dir -n .`
-- `composer network install --card PeerAdmin@hlfv1 --archiveFile phrs@0.0.8.bna`
-- `composer network start --networkName phrs --networkVersion 0.0.8 --card PeerAdmin@hlfv1 --networkAdmin admin --networkAdminEnrollSecret adminpw --file networkadmin.card`
+- `composer network install --card PeerAdmin@hlfv1 --archiveFile phrs@0.0.9.bna`
+- `composer network start --networkName phrs --networkVersion 0.0.9 --card PeerAdmin@hlfv1 --networkAdmin admin --networkAdminEnrollSecret adminpw --file networkadmin.card`
 - `composer card import --file networkadmin.card` 
 - To check that the business network has been deployed successfully, run the following command to ping the network, `composer network ping --card admin@phrs`
 - `composer-rest-server -c admin@phrs -n always -u true -d y -w true`

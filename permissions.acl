@@ -28,6 +28,7 @@ rule DoctorSeeUpdateThemselvesOnly {
   condition: (r.getIdentifier() == p.getIdentifier())
   action: ALLOW
 }
+
 rule ResearcherSeeUpdateThemselvesOnly {
   description: "A researcher can see and update their own record only"
   participant(p): "org.conisol.mynetwork.Researcher"
@@ -76,6 +77,33 @@ rule MedicalRecordConditionalAccess {
     resource(r): "org.conisol.mynetwork.MedicalRecord"
     condition: (r.permissions && r.permissions.indexOf(p.getIdentifier()) > -1)
     action: ALLOW
+}
+
+rule PatientsSeeOwnHistoryOnly {
+  description: "Patients should be able to see the history of their own transactions only"
+  participant(t): "org.conisol.mynetwork.Patient"
+  operation: READ
+  resource(v): "org.hyperledger.composer.system.HistorianRecord"
+  condition: (v.participantInvoking.getIdentifier() != t.getIdentifier())
+  action: DENY
+}
+
+rule DoctorsSeeOwnHistoryOnly {
+  description: "Doctors should be able to see the history of their own transactions only"
+  participant(t): "org.conisol.mynetwork.Doctor"
+  operation: READ
+  resource(v): "org.hyperledger.composer.system.HistorianRecord"
+  condition: (v.participantInvoking.getIdentifier() != t.getIdentifier())
+  action: DENY
+}
+
+rule ResearcherSeeOwnHistoryOnly {
+  description: "Researchers should be able to see the history of their own transactions only"
+  participant(t): "org.conisol.mynetwork.Researcher"
+  operation: READ
+  resource(v): "org.hyperledger.composer.system.HistorianRecord"
+  condition: (v.participantInvoking.getIdentifier() != t.getIdentifier())
+  action: DENY
 }
 rule SystemACL {
     description:  "System ACL to permit all access"
