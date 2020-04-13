@@ -1,7 +1,8 @@
 # Patient-health-records-system
 
 The main objective of this system is to provide patients with one-stop-shop access to their medical history across multiple providers. From here the patients are given full access and control of their medical records.
-The frontend for this can be found [here] (https://github.com/kunmuli/phrs-web-app)
+
+The frontend for this can be found [here](https://github.com/kunmuli/phrs-web-app)
 
 ## Tech Stack used for the project
 * IBM’s Hyperledger Framework for Blockchain
